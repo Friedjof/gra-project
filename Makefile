@@ -1,12 +1,28 @@
 CC = gcc
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -Werror -std=c99 -pedantic -g
+LDFLAGS = -lm
 
-all: build
-build: main.c
-	$(CC) $(CFLAGS) -o ./main main.c
+SRC=src
+OBJ=obj
+BIN=bin
+SRCS=$(wildcard $(SRC)/*.c)
+OBJS=$(patsubst $(SRC)/%.c,$(OBJ)/%.o,$(SRCS))
+HDRS=$(wildcard $(SRC)/*.h)
+EXEC=main
 
-run: build
-	./main
+all: $(EXEC)
+
+$(EXEC): $(OBJS) $(OBJ) $(HDRS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(BIN)/$@ $(LDFLAGS)
+
+$(OBJ)/%.o: $(SRC)/%.c $(OBJ)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ):
+	mkdir -p $(OBJ)
+
+run: $(EXEC)
+	./$(BIN)/$(EXEC)
 
 clean:
-	rm -f ./main
+	rm -rf $(OBJ) $(BIN)/$(EXEC)
