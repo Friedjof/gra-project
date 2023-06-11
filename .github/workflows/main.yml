@@ -10,10 +10,14 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Build and Test
+    - name: Build
       run: |
-        # Fügen Sie hier die Befehle hinzu, um Ihr C-Projekt zu kompilieren und zu testen
-        # Zum Beispiel:
-        # gcc -o my_project my_project.c
-        # ./my_project --test
-        echo "Hello World!!!"
+        echo "Build…"
+        make build
+        echo "Build done."
+
+    - name: Run
+      run: |
+        echo "Run…"
+        make run
+        echo "Run done."
