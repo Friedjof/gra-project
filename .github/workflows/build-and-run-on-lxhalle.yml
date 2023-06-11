@@ -13,7 +13,7 @@ jobs:
     - name: Build
       run: |
         echo "Build…"
-        make build
+        make
         echo "Build done."
 
     - name: Run
