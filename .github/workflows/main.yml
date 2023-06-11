@@ -1,6 +1,6 @@
 name: C-Projekt-Beispiel
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   build:
@@ -16,3 +16,4 @@ jobs:
         # Zum Beispiel:
         # gcc -o my_project my_project.c
         # ./my_project --test
+        echo "Hello World!!!"
