@@ -57,3 +57,7 @@ dkms.conf
 *.conf
 *.cfg
 *.env
+
+# Archived files
+*.7z
+*.zip

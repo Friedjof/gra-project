@@ -10,6 +10,8 @@ OBJS=$(patsubst $(SRC)/%.c,$(OBJ)/%.o,$(SRCS))
 HDRS=$(wildcard $(SRC)/*.h)
 EXEC=main
 
+SUBMITNAME=tmp-submit.zip
+
 all: $(EXEC)
 
 $(EXEC): $(OBJS) $(OBJ) $(HDRS)
@@ -25,5 +27,9 @@ $(OBJ):
 run: $(EXEC)
 	./$(BIN)/$(EXEC)
 
+submit:
+	rm -rf $(SUBMITNAME)
+	zip -r $(SUBMITNAME) $(BIN)
+
 clean:
-	rm -rf $(OBJ) $(BIN)
+	rm -rf $(OBJ) $(BIN) $(SUBMITNAME)
