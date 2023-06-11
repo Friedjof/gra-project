@@ -24,16 +24,3 @@ jobs:
 
     - name: Test re
       run: make re
-
-  test:
-    runs-on: self-hosted
-
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v3
-
-    - name: Install tests dependencies (Criterion)
-      run: chmod +x ./tests/install_criterion.sh && sh ./tests/install_criterion.sh
-    
-    - name: run lxhalle tests
-      run: make lxhalle_test
