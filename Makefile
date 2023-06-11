@@ -1,35 +1,40 @@
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror -std=c99 -pedantic -g
-LDFLAGS = -lm
+CFLAGS = -W -Wall -Werror -Wextra
+CPPFLAGS = -I./include/
+LIBS = -lutils
 
-SRC=src
-OBJ=obj
-BIN=bin
-SRCS=$(wildcard $(SRC)/*.c)
-OBJS=$(patsubst $(SRC)/%.c,$(OBJ)/%.o,$(SRCS))
-HDRS=$(wildcard $(SRC)/*.h)
-EXEC=main
+SRC = $(shell find ./src/ -type f -name "*.c")
+OBJ = $(SRC:.c=.o)
+BIN = project
 
-SUBMITNAME=tmp-submit.zip
+all: $(BIN)
 
-all: $(EXEC)
+$(BIN): $(OBJ)
+	make -C $(shell find ./lib/ -maxdepth 1 -type d -not -name "lib")
+	$(CC) $(OBJ) -o $(BIN) -L./lib/ $(LIBS)
 
-$(EXEC): $(OBJS) $(OBJ) $(HDRS)
-	mkdir -p $(BIN)
-	$(CC) $(CFLAGS) $(OBJS) -o $(BIN)/$@ $(LDFLAGS)
+run: $(BIN)
+	clear && echo "====================================================================================================" && ./$(BIN) && echo "===================================================================================================="
 
-$(OBJ)/%.o: $(SRC)/%.c $(OBJ)
-	$(CC) $(CFLAGS) -c $< -o $@
+lxhalle_run: $(BIN)
+	./$(BIN)
 
-$(OBJ):
-	mkdir -p $(OBJ)
+build_test: fclean
+	make -C $(shell find ./lib/ -maxdepth 1 -type d -not -name "lib")
+	$(CC) $(shell find ./tests/ -type f -name "*.c") $(CPPFLAGS) -o unit_tests -L./lib/ $(LIBS) -lcriterion
 
-run: $(EXEC)
-	./$(BIN)/$(EXEC)
+test: build_test
+	clear && echo "====================================================================================================" && echo "Running unit tests..." && ./unit_tests && rm unit_tests
 
-submit:
-	rm -rf $(SUBMITNAME)
-	zip -r $(SUBMITNAME) $(BIN)
+lxhalle_test: build_test
+	./unit_tests && rm unit_tests
 
 clean:
-	rm -rf $(OBJ) $(BIN) $(SUBMITNAME)
+	$(RM) $(shell find ./ -type f -name "*.o") *.gcno *.gcda
+
+fclean: clean
+	$(RM) $(BIN) unit_tests $(shell find ./ -type f -name "*.a")
+
+re: fclean all
+
+check:
+	@echo "Hello, from Makefile!"
