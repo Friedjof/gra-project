@@ -13,6 +13,7 @@ EXEC=main
 all: $(EXEC)
 
 $(EXEC): $(OBJS) $(OBJ) $(HDRS)
+	mkdir -p $(BIN)
 	$(CC) $(CFLAGS) $(OBJS) -o $(BIN)/$@ $(LDFLAGS)
 
 $(OBJ)/%.o: $(SRC)/%.c $(OBJ)
@@ -25,4 +26,4 @@ run: $(EXEC)
 	./$(BIN)/$(EXEC)
 
 clean:
-	rm -rf $(OBJ) $(BIN)/$(EXEC)
+	rm -rf $(OBJ) $(BIN)
