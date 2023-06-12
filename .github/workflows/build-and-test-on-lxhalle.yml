@@ -24,3 +24,27 @@ jobs:
 
     - name: Test re
       run: make re
+
+  test:
+    runs-on: self-hosted
+
+    needs: build
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Check Makefile
+      run: make check
+
+    - name: Build
+      run: make
+
+    - name: Run project on lxhalle
+      run: make lxhalle_run
+
+    - name: Test fclean
+      run: make fclean
+
+    - name: Test re
+      run: make re
